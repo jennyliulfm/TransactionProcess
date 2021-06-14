@@ -18,7 +18,10 @@ namespace Transaction
         static async Task Main(string[] args)
         {
             // Print Instructions to User
-            PrintInstructions();
+            //PrintInstructions();
+
+            //Setup configuration
+            var host = AppStartup();
 
             //Verify running paramaters
             if ( args.Length == 0 || args == null)
@@ -35,21 +38,10 @@ namespace Transaction
                     inputFile = Path.Combine(Directory.GetCurrentDirectory(), inputFile);
 
                 //verify input exists or not and whether it is CSV file
-                if (!File.Exists(inputFile))
-                {
-                    //Log error
-                    Log.Error($"Input file {inputFile} does not exist");
-                }
-                else if(Path.GetExtension(inputFile) !=".csv")
-                {
-                    Log.Error($"{inputFile} is not csv file");
-                }
-                else
-                {
-                   
-                    //Setup configuration
-                    var host = AppStartup();
+                var isValid = ValidatInputFile(inputFile);
 
+                if(isValid == true)
+                {
                     //Create output file
                     string outputFile = CreateOutputFile();
                   
@@ -61,6 +53,7 @@ namespace Transaction
                     }
                     else
                     {
+                        Log.Error("testing");
                         //Output file exists, then run the service 
                         Log.Information("Application starting running");
 
@@ -148,6 +141,24 @@ namespace Transaction
             return DateTime.Now.ToString("ddMMyyyy") + "_" + timeStamp ;
         }
 
+        static bool ValidatInputFile(string inputFile)
+        {
+            if (!File.Exists(inputFile))
+            {
+                //Log error
+                Log.Error($"Input file {inputFile} does not exist");
+                return false;
+            }
+            else if (Path.GetExtension(inputFile) != ".csv")
+            {
+                Log.Error($"{inputFile} is not csv file");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         /// <summary>
         /// Print user instructions
         /// </summary>

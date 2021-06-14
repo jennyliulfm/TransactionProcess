@@ -93,3 +93,4 @@ D:\Jennifer\TransactionProcessor\TransactionProcessor\obj\Debug\TransactionProce
 D:\Jennifer\TransactionProcessor\TransactionProcessor\obj\Debug\TransactionProcessor.csproj.CopyComplete
 D:\Jennifer\TransactionProcessor\TransactionProcessor\obj\Debug\TransactionProcessor.exe
 D:\Jennifer\TransactionProcessor\TransactionProcessor\obj\Debug\TransactionProcessor.pdb
+D:\Jennifer\TransactionProcessor\TransactionProcessor\obj\Debug\TransactionProcessor.csprojAssemblyReference.cache

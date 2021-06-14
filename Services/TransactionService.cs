@@ -61,33 +61,13 @@ namespace Transaction.Services
         /// <returns></returns>
         public async Task<string> GetCardTypeAsync(string binNumber)
         {
-            //Trim BIN Number to remove whitespaces at beginning, the end and the middle.
-            binNumber = this.TrimString(binNumber);
+           
+            //Validate BIN Number
+            var validResult = this.ValidateBINNumber(binNumber);
 
-            //Get BIN Number
-            binNumber = binNumber.Substring(0, 6);
-            
-            //Try to parse BIN Number to int as to filter out invalid negative BIN Number for performance improving.
-            int number = 0;
-            bool success = Int32.TryParse(binNumber, out number);
-
-            //Verify BIN Number
-            // 1. BIN Number lenghth is 6 or more
-            // 2. BIN number should be all digits
-            // 3. BIN Number is positive
-            if (binNumber.Length < 6)
+            if(validResult.Contains("Error"))
             {
-                //return string.Empty;
-                return string.Format($"Error: {binNumber} length is invalid");
-            }
-            else if (!binNumber.All(Char.IsDigit))
-            { 
-                //return string.Empty;
-                return string.Format($"Error:{binNumber} contains non-digital characters");
-            }
-            else if (success && number <= 0)
-            {
-                return string.Format($"Error: {binNumber} is not a postive number and invalid");
+                return validResult;
             }
             else
             {
@@ -133,6 +113,47 @@ namespace Transaction.Services
 
 
                 }
+            }
+        }
+
+        /// <summary>
+        /// Validate BIN Number
+        /// </summary>
+        /// <param name="binNumber"></param>
+        /// <returns></returns>
+        private string ValidateBINNumber(string binNumber)
+        {
+            //Trim BIN Number to remove whitespaces at beginning, the end and the middle.
+            binNumber = this.TrimString(binNumber);
+
+            //Get BIN Number
+            binNumber = binNumber.Substring(0, 6);
+
+            //Try to parse BIN Number to int as to filter out invalid negative BIN Number for performance improving.
+            int number = 0;
+            bool success = Int32.TryParse(binNumber, out number);
+
+            //Verify BIN Number
+            // 1. BIN Number lenghth is 6 or more
+            // 2. BIN number should be all digits
+            // 3. BIN Number is positive
+            if (binNumber.Length < 6)
+            {
+                //return string.Empty;
+                return string.Format($"Error: {binNumber} length is invalid");
+            }
+            else if (!binNumber.All(Char.IsDigit))
+            {
+                //return string.Empty;
+                return string.Format($"Error:{binNumber} contains non-digital characters");
+            }
+            else if (success && number <= 0)
+            {
+                return string.Format($"Error: {binNumber} is not a postive number and invalid");
+            }
+            else
+            {
+                return String.Format($"Success:{binNumber} is valid");
             }
         }
 
